@@ -2,6 +2,7 @@ Click==7.0
 Flask==1.0.3
 Flask-Login==0.4.1
 Flask-SQLAlchemy==2.4.0
+Flask-WTF==0.14.2
 itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
@@ -16,4 +17,3 @@ Shapely==1.6.4.post2
 numpy==1.16.3
 PyYAML==5.1
 https://storage.googleapis.com/bbc-datascience-libraries/python/dslib-0.0.4.tar.gz
-
