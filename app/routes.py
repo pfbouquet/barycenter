@@ -4,7 +4,8 @@ from flask import render_template, url_for, request
 from flask_login import current_user, login_required, login_user
 from werkzeug.utils import redirect
 
-from app import app
+from app import app, db
+from app.forms import RegistrationForm
 from app.models import User
 
 
@@ -30,7 +31,42 @@ def login():
     return render_template('login.html')
 
 
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
+
+    if current_user.is_authenticated:
+        return redirect(url_for('groups'))
+
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        login_user(user, remember=True, duration=timedelta(days=90))
+        return redirect(url_for('groups'))
+
+    return render_template('signin.html', form=form)
+
+
 @app.route('/groups', methods=['GET', 'POST'])
 @login_required
 def groups():
     return render_template('groups.html')
+
+
+@app.route('/group/<group_id>', methods=['GET', 'POST'])
+@login_required
+def group(group_id):
+    return render_template('group.html', group_id)
+
+
+@app.route('/result/<group_id>', methods=['POST'])
+@login_required
+def result(group_id):
+    return render_template('result.html', group_id)
+
+
+@app.route('/subscribe/<group_id>', methods=['GET', 'POST'])
+def subscribe(group_id):
+    return render_template('subscribe.html', group_id)
