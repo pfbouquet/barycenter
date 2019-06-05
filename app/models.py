@@ -16,8 +16,8 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(100))
     email = db.Column(db.String(256))
 
-    __tablename__ = "users"
-    __table_args__ = {"schema": "journal"}
+    __tablename__ = "user"
+    __table_args__ = {"schema": "coding_night"}
 
     def __repr__(self):
         return '<User {0}: {1}>'.format(self.id, self.username)
