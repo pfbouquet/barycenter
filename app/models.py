@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -20,10 +22,28 @@ class User(UserMixin, db.Model):
     __table_args__ = {"schema": "coding_night"}
 
     def __repr__(self):
-        return '<User {0}: {1}>'.format(self.id, self.username)
+        return f'<User {self.id}: {self.username}>'
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+class Group(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    creator = db.Column(db.String(50))
+
+    __tablename__ = "group"
+    __table_args__ = {"schema": "coding_night"}
+
+    def __repr__(self):
+        return f'<Group {self.name} from user {self.creator}>'
+
+    def __init__(self, name, creator):
+        self.id = generate_password_hash(f'{creator}{datetime.now()}')[-50:]
+        self.name = name
+        self.creator = creator
