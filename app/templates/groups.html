@@ -1,1 +1,32 @@
-Here will be listed groups
+<html>
+
+<head>
+    <title>Groups</title>
+</head>
+
+<body>
+<table align="center">
+
+
+{% if not groups %}
+
+    <tr><td>
+    You have no groups yet.
+    </td></tr>
+
+{% else %}
+
+    <tr><td>
+    Your groups:
+    </td></tr>
+
+    {% for group in groups %}
+        <tr><td>
+        <a href="{{url_for('group', group_id=group['id'])}}">{{group['name']}}</a>
+        </td></tr>
+    {% endfor %}
+
+{% endif %}
+
+</body>
+</html>
