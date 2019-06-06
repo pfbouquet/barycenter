@@ -1,0 +1,27 @@
+<html>
+
+<head>
+    <title>Login</title>
+</head>
+
+<body>
+
+<table align="center">
+    <form method="post">
+        <tr><td>
+        <input id="username" name="username" placeholder="Username" type="text">
+        </td></tr>
+        <tr><td>
+        <input id="password" name="password" placeholder="Password" type="password">
+        </td></tr>
+        <tr><td>
+        <button type="submit">Log in</button>
+        </td></tr>
+        <tr><td>
+        <p><a href="{{url_for('signin')}}">Sign in</a></p>
+        </td></tr>
+    </form>
+</table>
+
+</body>
+</html>

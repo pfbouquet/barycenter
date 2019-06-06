@@ -1,2 +1,3 @@
 conf/credentials.yaml
 .idea/
+conf/app.py
