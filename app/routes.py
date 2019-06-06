@@ -68,7 +68,7 @@ def groups():
             return redirect(url_for('group', group_id=group.id))
 
     form = GroupCreationForm()
-    groups = Group.query.filter_by(creator=current_user.username).all()
+    groups = Group.query.join(Member).filter(Member.user_id == current_user.id).all()
     subscribe_id = request.args.get('subscribe')
     if subscribe_id:
         if subscribe_id not in [group_id for group_id in Member.query.filter_by(current_user.username).all()]:
