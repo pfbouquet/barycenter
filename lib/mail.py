@@ -11,7 +11,7 @@ class MailSender:
     def __init__(self, public_key, private_key):
         self.mailjet = Client(auth=(public_key, private_key), version='v3.1')
 
-    def send_mail(self, text, recipient_mail):
+    def send(self, text, recipient_mail):
         """
         Send the text as an e_mail to the recipient
         :param text: text of your email
@@ -43,9 +43,8 @@ class MailSender:
     def generate_text(template, **params):
         """
         generate text of the email
-        :param self:
-        :param groupname:
-        :param username:
+        :param groupname: name of the group
+        :param username: name of the user
         :return: html text to send
         """
         text = render_string(template, params)
@@ -58,6 +57,6 @@ def send_to_group(sender, template, group):
     user_list = group['users']
 
     for user in user_list:
-        text = sender.generate_text(template, username=user['username'], groupname=group_name)
-        sender.send_mail(text, user['email'])
+        text = sender.generate_text(template, username=user['username'], group_name=group_name)
+        sender.send(text, user['email'])
 
