@@ -55,23 +55,27 @@ def signin():
 
 
 @app.route('/groups', methods=['GET', 'POST'])
-@login_required
 def groups():
 
     if request.method == 'POST':
-        if 'group_name' in request.form:
-            group = Group(name=get_post_result('group_name'), creator=current_user.username)
+        if 'new_group_name' in request.form:
+            group = Group(name=get_post_result('new_group_name'), creator=current_user.username)
             db.session.add(group)
             member = Member(user_id=current_user.id, group_id=group.id)
             db.session.add(member)
             db.session.commit()
             return redirect(url_for('group', group_id=group.id))
+        if 'accept_group' in request.form:
+            member = Member(user_id=current_user.id, group_id=request.form['accept_group'])
+            db.session.add(member)
+            db.session.commit()
+            return redirect(url_for('group', group_id=request.form['accept_group']))
 
     form = GroupCreationForm()
     groups = Group.query.join(Member).filter(Member.user_id == current_user.id).all()
     subscribe_id = request.args.get('subscribe')
     if subscribe_id:
-        if subscribe_id not in [group_id for group_id in Member.query.filter_by(user_id=current_user.id).all()]:
+        if subscribe_id not in [member.group_id for member in Member.query.filter_by(user_id=current_user.id).all()]:
             subscribe = Group.query.filter_by(id=subscribe_id).first()
             return render_template('groups.html', groups=groups, subscribe=subscribe, form=form)
 

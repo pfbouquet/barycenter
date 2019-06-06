@@ -32,8 +32,8 @@
 <table align="center">
     {{ form.hidden_tag() }}
     <tr><td>
-        {{ form.group_name() }}<br>
-        {% for error in form.group_name.errors %}
+        {{ form.new_group_name() }}<br>
+        {% for error in form.new_group_name.errors %}
         <span class="error">{{ error }}</span>
         {% endfor %}
     </td></tr>
@@ -48,13 +48,15 @@
 
 <h1>Subscribe</h1>
 
+<form action="" method="post">
 <table align="center">
     <tr>
         <td>{{ subscribe['name'] }}</td>
-        <td>[OK]</td>
+        <td><button name="accept_group" value="{{ subscribe['id'] }}" type="submit">OK</button></td>
         <td>[Remove]</td>
     </tr>
 </table>
+</form>
 
 {% endif %}
 
