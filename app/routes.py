@@ -92,6 +92,9 @@ def group(group_id):
             db.session.commit()
             return redirect(url_for('groups'))
 
+    if not db.session.query(Member.id).filter_by(group_id=group_id, user_id=current_user.id).all():
+        return redirect(url_for('groups'))
+
     group = Group.query.filter_by(id=group_id).first()
     members = db.session.query(User).join(Member).join(Group).filter(Group.id == group_id).all()
     return render_template('group.html', group=group, members=members)
