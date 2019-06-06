@@ -1,0 +1,26 @@
+
+<html>
+
+<head>
+    <title>{{ group['name'] }}</title>
+</head>
+
+<body>
+
+<h1>{{ group['name'] }}</h1>
+
+<table align="center">
+
+{% for member in members %}
+    <tr>
+        <td>{{ member['name'] }} </td>
+        <td>[{{ member['address_1'] }}]</td>
+        <td>[{{ member['address_2'] }}]</td>
+    </tr>
+{% endfor %}
+
+    <tr><td><a href="{{ url_for('groups') }}">Back</a></td></tr>
+
+</table>
+</body>
+</html>
