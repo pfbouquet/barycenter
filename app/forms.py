@@ -39,7 +39,7 @@ class RegistrationForm(FlaskForm):
 
 class GroupCreationForm(FlaskForm):
 
-    group_name = StringField(
+    new_group_name = StringField(
         'Group  name', validators=[DataRequired(), Length(5, 20)], render_kw={'placeholder': 'Group name'}
     )
     submit = SubmitField('Create group')
