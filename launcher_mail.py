@@ -1,10 +1,18 @@
 from lib.mail import MailSender
 from lib.mail import send_to_group
 from lib.geo_encode import address_to_geopoint
+import yaml
+
 
 def main():
 
-    mail_sender = MailSender('6f03cdb2c5d106f4b3407f70b27c11f7', 'e4e553e7a263b7be0ddc8292bed5fce1')
+
+    with open("conf/credentials.yaml", 'r') as stream:
+        data_loaded_credentials = yaml.safe_load(stream)
+    PUBLIC_KEY = data_loaded_credentials['mailsender']['PUBLIC_KEY']
+    PRIVATE_KEY = data_loaded_credentials['mailsender']['PRIVATE_KEY']
+
+    mail_sender = MailSender(PUBLIC_KEY, PRIVATE_KEY)
 
     with open('./ressources/text_mail.html') as f:
         template = f.read()
@@ -13,9 +21,7 @@ def main():
     {
         'group_name': 'Data Scientist',
         'users': [
-            {'username': 'Clement', 'email': 'clement.gain@blablacar.com'},
-            {'username': 'Raph', 'email': 'raphael.berly@blablacar.com'},
-            {'username': 'Clemen', 'email': 'clement.gain@hotmail.fr'}
+            {'username': 'Clement', 'email': 'clement.gain@blablacar.com'}
         ]
     }
 
