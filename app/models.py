@@ -17,6 +17,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(30))
     password_hash = db.Column(db.String(100))
     email = db.Column(db.String(256))
+    address_1 = db.Column(db.String(100))
+    address_2 = db.Column(db.String(100))
 
     __tablename__ = "user"
     __table_args__ = {"schema": "coding_night"}
@@ -52,13 +54,11 @@ class Group(db.Model):
 class Member(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
+    user_id = db.Column(db.Integer)
     group_id = db.Column(db.String(50))
-    address_1 = db.Column(db.String(100))
-    address_2 = db.Column(db.String(100))
 
     __tablename__ = "member"
     __table_args__ = {"schema": "coding_night"}
 
     def __repr__(self):
-        return f'<Member {self.name} from group {self.group_id}>'
+        return f'<Member {self.user_id} from group {self.group_id}>'
