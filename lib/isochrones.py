@@ -1,18 +1,22 @@
 import numpy as np
 import requests
 import yaml
+from dslib.utils import timeit
 
 from shapely.geometry import shape
 from shapely.geometry import Point
 
 
 MAPBOX_BASE_URL = "https://api.mapbox.com"
-TIME_LIMITS = [10, 20, 30, 40]
 POSSIBLE_MODES = ["driving", "cycling", "walking"]
 
 with open("conf/credentials.yaml", 'r') as stream:
-    data_loaded = yaml.safe_load(stream)
-MAPBOX_TOKEN = data_loaded['mapbox']['MAPBOX_TOKEN']
+    data_loaded_credentials = yaml.safe_load(stream)
+MAPBOX_TOKEN = data_loaded_credentials['mapbox']['MAPBOX_TOKEN']
+
+with open("conf/isochrones.yaml", 'r') as stream:
+    data_loaded_isochrones = yaml.safe_load(stream)
+TIME_LIMITS = data_loaded_isochrones['time_limits']
 
 
 class PoiIsochrones:
@@ -80,7 +84,6 @@ class GroupIsochrones:
         self.array_transport_mode = array_transport_mode
         self.nb_points = len(self.array_points_lon_lat)
         assert len(self.array_points_lon_lat) == len(self.array_transport_mode) == self.nb_points
-
         self.array_poi_isochrones = [
             PoiIsochrones(point=Point(self.array_points_lon_lat[i]), mode=array_transport_mode[i]).get_isochrones()
             for i in range(self.nb_points)
