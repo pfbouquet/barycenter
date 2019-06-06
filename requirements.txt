@@ -4,3 +4,8 @@ itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
 Werkzeug==0.15.4
+requests==2.21.0
+Shapely==1.6.4.post2
+numpy==1.16.3
+PyYAML==5.1
+https://storage.googleapis.com/bbc-datascience-libraries/python/dslib-0.0.4.tar.gz
