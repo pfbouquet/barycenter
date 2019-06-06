@@ -72,8 +72,3 @@ def group(group_id):
 @login_required
 def result(group_id):
     return render_template('result.html', group_id)
-
-
-@app.route('/subscribe/<group_id>', methods=['GET', 'POST'])
-def subscribe(group_id):
-    return render_template('subscribe.html', group_id)
