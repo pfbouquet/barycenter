@@ -85,6 +85,13 @@ def groups():
 @app.route('/group/<group_id>', methods=['GET', 'POST'])
 @login_required
 def group(group_id):
+
+    if request.method == 'POST':
+        if 'leave_group' in request.form:
+            Member.query.filter_by(user_id=current_user.id, group_id=request.form['leave_group']).delete()
+            db.session.commit()
+            return redirect(url_for('groups'))
+
     group = Group.query.filter_by(id=group_id).first()
     members = db.session.query(User).join(Member).join(Group).filter(Group.id == group_id).all()
     return render_template('group.html', group=group, members=members)
