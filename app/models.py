@@ -33,7 +33,7 @@ class User(UserMixin, db.Model):
 
 class Group(db.Model):
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(50), primary_key=True)
     name = db.Column(db.String(50))
     creator = db.Column(db.String(50))
 
@@ -47,3 +47,18 @@ class Group(db.Model):
         self.id = generate_password_hash(f'{creator}{datetime.now()}')[-50:]
         self.name = name
         self.creator = creator
+
+
+class Member(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50))
+    group_id = db.Column(db.String(50))
+    address_1 = db.Column(db.String(100))
+    address_2 = db.Column(db.String(100))
+
+    __tablename__ = "member"
+    __table_args__ = {"schema": "coding_night"}
+
+    def __repr__(self):
+        return f'<Member {self.name} from group {self.group_id}>'
