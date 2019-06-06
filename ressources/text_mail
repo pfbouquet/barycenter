@@ -1,0 +1,9 @@
+<p>Hello {{username}} !</p>
+<p>&nbsp;</p>
+<p>Our cutting edge algorithm smartly selected the best place for meeting members of the group : {{groupname}} </p>
+<p>&nbsp;</p>
+<p>Here is the list of the selected place :</p>
+<p>lien1<br />lien2<br />lien3<br />lien4<br />lien5<br />lien6</p>
+<p>&nbsp;</p>
+<p>All the Smart Meeting Place team hope that you're going to enjoy this great moment !<br />
+<br />The Smart Meeting Place team.</p>
