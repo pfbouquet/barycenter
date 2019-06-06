@@ -1,11 +1,6 @@
+{% extends "base.html" %}
 
-<html>
-
-<head>
-    <title>{{ group['name'] }}</title>
-</head>
-
-<body>
+{% block content %}
 
 <h1>{{ group['name'] }}</h1>
 
@@ -30,5 +25,5 @@
     <tr><td><button onclick="window.location.href='{{ url_for('search',  group_id=group['id']) }}'">Search</button></td></tr>
 
 </table>
-</body>
-</html>
+
+{% endblock %}
