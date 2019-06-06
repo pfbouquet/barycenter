@@ -39,7 +39,12 @@ def signin():
 
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
+        user = User(
+            username=form.username.data,
+            email=form.email.data,
+            address_1=form.address_1.data,
+            address_2=form.address_2.data
+        )
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
