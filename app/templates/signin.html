@@ -34,6 +34,18 @@
             {% endfor %}
         </td></tr>
         <tr><td>
+            {{ form.address_1() }}<br>
+            {% for error in form.address_1.errors %}
+            <span class="error">{{ error }}</span>
+            {% endfor %}
+        </td></tr>
+        <tr><td>
+            {{ form.address_2() }}<br>
+            {% for error in form.address_2.errors %}
+            <span class="error">{{ error }}</span>
+            {% endfor %}
+        </td></tr>
+        <tr><td>
             <button type="submit">Sign in</button>
         </td></tr>
         <tr><td>

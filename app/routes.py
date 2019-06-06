@@ -5,7 +5,7 @@ from flask_login import current_user, login_required, login_user
 from werkzeug.utils import redirect
 
 from app import app, db
-from app.forms import RegistrationForm
+from app.forms import RegistrationForm, GroupCreationForm
 from app.models import User, Group, Member
 
 
@@ -57,19 +57,32 @@ def signin():
 @app.route('/groups', methods=['GET', 'POST'])
 @login_required
 def groups():
+
+    if request.method == 'POST':
+        if 'group_name' in request.form:
+            group = Group(name=get_post_result('group_name'), creator=current_user.username)
+            db.session.add(group)
+            member = Member(user_id=current_user.id, group_id=group.id)
+            db.session.add(member)
+            db.session.commit()
+            return redirect(url_for('group', group_id=group.id))
+
+    form = GroupCreationForm()
     groups = Group.query.filter_by(creator=current_user.username).all()
-    return render_template('groups.html', groups=groups)
+    subscribe_id = request.args.get('subscribe')
+    if subscribe_id:
+        if subscribe_id not in [group_id for group_id in Member.query.filter_by(current_user.username).all()]:
+            subscribe = Group.query.filter_by(id=subscribe_id).first()
+            return render_template('groups.html', groups=groups, subscribe=subscribe, form=form)
+
+    return render_template('groups.html', groups=groups, form=form)
 
 
 @app.route('/group/<group_id>', methods=['GET', 'POST'])
 @login_required
 def group(group_id):
-    group = Group.query.filter_by(id=group_id).all()
-    if not len(group) == 1:
-        return redirect(url_for('groups'))
-    else:
-        group = group[0]
-    members = Member.query.filter_by(group_id=group.id)
+    group = Group.query.filter_by(id=group_id).first()
+    members = db.session.query(User).join(Member).join(Group).filter(Group.id == group_id).all()
     return render_template('group.html', group=group, members=members)
 
 

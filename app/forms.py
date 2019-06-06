@@ -18,6 +18,12 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         'Repeat password', validators=[DataRequired(), EqualTo('password')], render_kw={'placeholder': 'Repeat password'}
     )
+    address_1 = StringField(
+        'Home address', validators=[DataRequired(), Length(10, 100)], render_kw={'placeholder': 'Home address'}
+    )
+    address_2 = StringField(
+        'Work address', validators=[DataRequired(), Length(10, 100)], render_kw={'placeholder': 'Work address'}
+    )
     submit = SubmitField('Register')
 
     def validate_username(self, username):
@@ -29,3 +35,11 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+
+class GroupCreationForm(FlaskForm):
+
+    group_name = StringField(
+        'Group  name', validators=[DataRequired(), Length(5, 20)], render_kw={'placeholder': 'Group name'}
+    )
+    submit = SubmitField('Create group')
