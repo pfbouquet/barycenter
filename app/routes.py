@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from flask import render_template, url_for, request
+from flask import render_template, url_for, request, session
 from flask_login import current_user, login_required, login_user
 from werkzeug.utils import redirect
 
@@ -103,8 +103,15 @@ def search(group_id):
 
     if request.method == 'POST':
         if 'search' in request.form:
-            recipients = [int(id) for id in request.form.getlist('recipient')]
-            # DO STUFF WITH RECIPIENTS
+            session['recipients'] = [int(id) for id in request.form.getlist('recipient')]
+            recipients = User.query.filter(User.id.in_(session['recipients']))
+            # GET BEST BAR
+            return render_template('result.html', recipients=recipients)
+
+        if 'send' in request.form:
+            recipients = User.query.filter(User.id.in_(session['recipients']))
+            # SEND EMAIL
+            return render_template('result.html', recipients=recipients)
 
     group = Group.query.filter_by(id=group_id).first()
     members = db.session.query(User).join(Member).join(Group).filter(Group.id == group_id).all()
