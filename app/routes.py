@@ -6,7 +6,7 @@ from werkzeug.utils import redirect
 
 from app import app, db
 from app.forms import RegistrationForm
-from app.models import User, Group
+from app.models import User, Group, Member
 
 
 def get_post_result(key):
@@ -59,7 +59,13 @@ def groups():
 @app.route('/group/<group_id>', methods=['GET', 'POST'])
 @login_required
 def group(group_id):
-    return render_template('group.html', group_id)
+    group = Group.query.filter_by(id=group_id).all()
+    if not len(group) == 1:
+        return redirect(url_for('groups'))
+    else:
+        group = group[0]
+    members = Member.query.filter_by(group_id=group.id)
+    return render_template('group.html', group=group, members=members)
 
 
 @app.route('/result/<group_id>', methods=['POST'])
