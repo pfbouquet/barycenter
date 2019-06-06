@@ -71,7 +71,7 @@ def groups():
     groups = Group.query.join(Member).filter(Member.user_id == current_user.id).all()
     subscribe_id = request.args.get('subscribe')
     if subscribe_id:
-        if subscribe_id not in [group_id for group_id in Member.query.filter_by(current_user.username).all()]:
+        if subscribe_id not in [group_id for group_id in Member.query.filter_by(user_id=current_user.id).all()]:
             subscribe = Group.query.filter_by(id=subscribe_id).first()
             return render_template('groups.html', groups=groups, subscribe=subscribe, form=form)
 
