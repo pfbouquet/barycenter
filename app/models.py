@@ -43,7 +43,7 @@ class Group(db.Model):
     __table_args__ = {"schema": "coding_night"}
 
     def __repr__(self):
-        return f'<Group {self.name} from user {self.creator}>'
+        return f'<Group "{self.name}" from user {self.creator}>'
 
     def __init__(self, name, creator):
         self.id = generate_password_hash(f'{creator}{datetime.now()}')[-50:]
@@ -54,8 +54,8 @@ class Group(db.Model):
 class Member(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
-    group_id = db.Column(db.String(50))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    group_id = db.Column(db.String(50), db.ForeignKey(Group.id))
 
     __tablename__ = "member"
     __table_args__ = {"schema": "coding_night"}
