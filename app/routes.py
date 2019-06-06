@@ -97,7 +97,15 @@ def group(group_id):
     return render_template('group.html', group=group, members=members)
 
 
-@app.route('/result/<group_id>', methods=['POST'])
+@app.route('/search/<group_id>', methods=['GET', 'POST'])
 @login_required
-def result(group_id):
-    return render_template('result.html', group_id)
+def search(group_id):
+
+    if request.method == 'POST':
+        if 'search' in request.form:
+            recipients = [int(id) for id in request.form.getlist('recipient')]
+            # DO STUFF WITH RECIPIENTS
+
+    group = Group.query.filter_by(id=group_id).first()
+    members = db.session.query(User).join(Member).join(Group).filter(Group.id == group_id).all()
+    return render_template('search.html', group=group, members=members)

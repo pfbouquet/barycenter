@@ -11,8 +11,8 @@
 
 <p><a href="{{ url_for('groups') }}">Back</a></p>
 
-<form action="" method="post">
 <table align="center">
+<form action="" method="post">
 
 {% for member in members %}
     <tr>
@@ -25,7 +25,10 @@
     <tr><td>Share: http://0.0.0.0:5000/groups?subscribe={{ group['id'] }}</td></tr>
     <tr><td><button name="leave_group" value="{{ group['id'] }}" type="submit">Leave this group</button></td></tr>
 
-</table>
 </form>
+
+    <tr><td><button onclick="window.location.href='{{ url_for('search',  group_id=group['id']) }}'">Search</button></td></tr>
+
+</table>
 </body>
 </html>
