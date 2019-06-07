@@ -65,10 +65,17 @@ a {
 
 td {
     text-align: center;
+    color: #fff;
+    font: 16px Trebuchet MS;
 }
 
 .logo_wide {
     width: 70%;
     max-width: 300px;
     margin-top: 50px;
+}
+
+h1 {
+    color: #fff;
+    font: bold 25px Trebuchet MS;
 }

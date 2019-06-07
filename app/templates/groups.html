@@ -2,7 +2,9 @@
 
 {% block content %}
 
-<h1>My groups</h1>
+<a href="{{ url_for('groups') }}"><img class="logo_wide" src="{{ 'static/img/logo_wide.png' }}"></a>
+
+<h1>Your groups</h1>
 
 <table align="center">
 
@@ -24,6 +26,9 @@
 
 </table>
 
+
+<!--<h1>Create group</h1>-->
+
 <form action="" method="post">
 <table align="center">
     {{ form.hidden_tag() }}
@@ -32,8 +37,8 @@
         {% for error in form.new_group_name.errors %}
         <span class="error">{{ error }}</span>
         {% endfor %}
-    </td></tr>
-    <tr><td>
+    </td>
+    <td>
         <button type="submit">Create group</button>
     </td></tr>
 </table>
@@ -44,16 +49,20 @@
 
 <h1>Subscribe</h1>
 
-<form action="" method="post">
 <table align="center">
-    <tr>
-        <td>{{ subscribe['name'] }}</td>
-        <td><button name="accept_group" value="{{ subscribe['id'] }}" type="submit">OK</button></td>
-        <td>[Remove]</td>
-    </tr>
+        <tr><td>Would you like to subsribe to the "<b>{{ subscribe['name'] }}</b>" group?</td></tr>
 </table>
-</form>
+<table align="center">
+    <form action="" method="post">
+        <tr>
+            <td><button name="accept_group" value="{{ subscribe['id'] }}" type="submit">OK</button></td>
+            </form>
+            <td><button onclick="window.location.href='{{ url_for('groups') }}'">No</button></td>
+        </tr>
+</table>
+
 
 {% endif %}
+
 
 {% endblock %}
