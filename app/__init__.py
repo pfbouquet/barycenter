@@ -1,4 +1,4 @@
-from conf.app import Config
+from conf.app_conf import Config
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy

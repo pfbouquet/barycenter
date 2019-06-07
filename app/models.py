@@ -21,7 +21,7 @@ class User(UserMixin, db.Model):
     address_2 = db.Column(db.String(100))
 
     __tablename__ = "user"
-    __table_args__ = {"schema": "coding_night"}
+    __table_args__ = {"schema": "public"}
 
     def __repr__(self):
         return f'<User {self.id}: {self.username}>'
@@ -40,7 +40,7 @@ class Group(db.Model):
     creator = db.Column(db.String(50))
 
     __tablename__ = "group"
-    __table_args__ = {"schema": "coding_night"}
+    __table_args__ = {"schema": "public"}
 
     def __repr__(self):
         return f'<Group "{self.name}" from user {self.creator}>'
@@ -58,7 +58,7 @@ class Member(db.Model):
     group_id = db.Column(db.String(50), db.ForeignKey(Group.id))
 
     __tablename__ = "member"
-    __table_args__ = {"schema": "coding_night"}
+    __table_args__ = {"schema": "public"}
 
     def __repr__(self):
         return f'<Member {self.user_id} from group {self.group_id}>'
