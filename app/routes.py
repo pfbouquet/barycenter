@@ -13,6 +13,11 @@ def get_post_result(key):
     return dict(request.form)[key]
 
 
+@app.login_manager.unauthorized_handler
+def unauthorized_handler():
+    return redirect(url_for('login'))
+
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
