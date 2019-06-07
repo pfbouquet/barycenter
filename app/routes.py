@@ -10,6 +10,7 @@ from app.forms import RegistrationForm, GroupCreationForm
 from app.models import User, Group, Member
 from lib import matching
 from lib.geo_encode import address_to_geopoint
+from lib.mail import MailSender, send_to_group
 from lib.tools import get_database_uri
 
 
@@ -126,11 +127,20 @@ def search(group_id):
             # GET BEST PLACES
             credentials = yaml.safe_load(open('conf/credentials.yaml', 'r'))
             best_places = matching.match_bars(recipients_enriched, get_database_uri(**credentials['db']), limit=3)
+            session['results'] = best_places
             return render_template('result.html', results=best_places)
 
-        if 'send' in request.form:
-            recipients = User.query.filter(User.id.in_(session['recipients']))
-            # SEND EMAIL
+        if 'bar_choice' in request.form:
+            recipients = db.session.query(User.username, User.email).filter(User.id.in_(session['recipients'])).all()
+            group_details = {
+                'group_name': db.session.query(Group.name).filter_by(id=group_id).first()[0],
+                'users': [{'user_name': username, 'email': email} for username, email in recipients],
+            }
+            place_details = session['results'][int(request.form['bar_choice'])]
+            credentials = yaml.safe_load(open('conf/credentials.yaml', 'r'))
+            sender = MailSender(**credentials['mailsender'])
+            with open('app/templates/text_mail.html', 'r') as f:
+                send_to_group(sender, f.read(), group_details, place_details)
             return render_template('result.html', recipients=recipients)
 
     group = Group.query.filter_by(id=group_id).first()
