@@ -64,7 +64,7 @@ def send_to_group(sender, template, group, place):
 
     for user in user_list:
         text = sender.generate_text(template,
-                                    user_name=user['username'],
+                                    user_name=user['user_name'],
                                     group_name=group_name,
                                     place_name=place_name,
                                     place_yelp_url=place_yelp_url,
