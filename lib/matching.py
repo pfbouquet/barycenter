@@ -1,10 +1,10 @@
 import sqlalchemy
 import pandas as pd
-from lib.isochrones import GroupIsochrones
-
+from lib import isochrones
+from lib import scoring
 
 def get_isochrones(coordinates):
-    several_isochrones = GroupIsochrones(
+    several_isochrones = isochrones.GroupIsochrones(
         array_points_lon_lat=coordinates,
         array_transport_mode=['cycling']*len(coordinates)
     )
@@ -49,8 +49,7 @@ def get_geomatching_places(iso, database_uri, geomatching_target=50):
 def match_bars(coordinates, database_uri, limit=3):
 
     iso = get_isochrones(coordinates)
+    place_df = get_geomatching_places(iso, database_uri, 50)
+    place_df_scored = scoring.score_places(place_df)
 
-    geomatching_places_df = get_geomatching_places(iso, database_uri, 50)
-
-    return geomatching_places_df
-
+    return place_df_scored.sort_values(by=['score'], ascending=False).head(limit).to_dict('records')

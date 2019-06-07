@@ -23,7 +23,9 @@ def get_score(best_rate, min_time, rate, time, price):
 
 def get_price_score(price):
 
-    if len(price) == 1:
+    if not price:
+        return 0.5
+    elif len(price) == 1:
         return 1
     elif len(price) == 2:
         return 0.75
@@ -34,9 +36,9 @@ def get_price_score(price):
 
 
 def score_places(place_df):
-
+    place_df.reset_index(inplace=True, drop=True)
     best_time = get_best_time(place_df.time)
-    best_rate = get_best_rate(place_df.rating, place_df.review_count)
+    best_rate = get_best_rate(place_df.rating.tolist(), place_df.review_count.tolist())
 
     list_score = []
 
