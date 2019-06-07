@@ -5,6 +5,8 @@ import numpy as np
 
 def main():
     size = 10
+    array_transport_mode = ['walking', 'cycling', 'transit', 'transit', 'transit',
+                            'transit', 'walking', 'transit', 'cycling', 'cycling']
     with timeit():
         several_isochrones = GroupIsochrones(
             array_points_lon_lat=[
@@ -13,7 +15,7 @@ def main():
                     48.86971+np.random.rand()*0.1+i*0.02
                 ) for i in range(size)
             ],
-            array_transport_mode=['cycling' for i in range(size)]
+            array_transport_mode=array_transport_mode
         )
     with timeit():
         several_isochrones.compute_isochrones()

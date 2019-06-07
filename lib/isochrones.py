@@ -8,11 +8,13 @@ from shapely.geometry import Point
 
 
 MAPBOX_BASE_URL = "https://api.mapbox.com"
-POSSIBLE_MODES = ["driving", "cycling", "walking"]
+NAVITIA_BASE_URL = "https://api.navitia.io/v1/"
+POSSIBLE_MODES = ["driving", "cycling", "walking", "transit"]
 
 with open("conf/credentials.yaml", 'r') as stream:
     data_loaded_credentials = yaml.safe_load(stream)
 MAPBOX_TOKEN = data_loaded_credentials['mapbox']['MAPBOX_TOKEN']
+NAVITIA_TOKEN = data_loaded_credentials['navitia']['NAVITIA_TOKEN']
 
 with open("conf/isochrones.yaml", 'r') as stream:
     data_loaded_isochrones = yaml.safe_load(stream)
@@ -24,6 +26,7 @@ class PoiIsochrones:
     Defines a Point of Interest and the travel mode chosen by the user
     mode: driving, cycling, walking
     """
+
     def __init__(self, point: Point, mode: str):
         assert mode in POSSIBLE_MODES
         self.mode = mode
@@ -33,16 +36,56 @@ class PoiIsochrones:
         self.json_result = None
         self.res = None
         self.mapbox_request_url = ""
+        self.navitia_request_url = ""
+        self.time_limits_str = np.array(TIME_LIMITS).astype(str)
 
     def get_isochrones(self):
+        """
+        Distributes to the good provider depending on transit or other travel mode
+        """
+        if self.mode == 'transit':
+            return self.get_isochrones_navitia()
+        elif self.mode in ('cycling', 'driving', 'walking'):
+            return self.get_isochrones_mapbox()
+        else:
+            print("Choose another mode")
+            return None
+
+    def get_isochrones_navitia(self):
+        """
+        Calls the NAVITIA API to get several isochrones at once
+        :return:
+        """
+        headers = {'Authorization': NAVITIA_TOKEN}
+        self.navitia_request_url = \
+            f"https://api.navitia.io/v1/coverage/fr-idf/isochrones?" \
+                f"from={self.lon}%3B{self.lat}" \
+                "&boundary_duration%5B%5D=" + "&boundary_duration%5B%5D=".join(self.time_limits_str)
+        self.res = requests.get(self.navitia_request_url, headers=headers)
+        if self.res.status_code == 200:
+            self.json_result = self.res.json()
+
+            self.isochrones = {}
+            for i in range(len(self.json_result['isochrones'])):
+                # self.isochrones is a dict. Keys are the times rounded to 10 min
+                # Values are the shapely shapes of the corresponding boxes.
+                self.isochrones[self.json_result['isochrones'][i]['max_duration']] = \
+                    shape(self.json_result['isochrones'][i]['geojson']).buffer(0)
+            return self
+        else:
+            print(f"Error {self.res.status_code} while getting the isochrones from Navitia")
+            print(self)
+            print(self.res)
+            return None
+
+    def get_isochrones_mapbox(self):
         """
         Calls the Mapbox API to get several isochrones at once
         :return:
         """
-        time_limits = np.array(TIME_LIMITS).astype(str)
         self.mapbox_request_url = f"{MAPBOX_BASE_URL}/isochrone/v1/mapbox/{self.mode}" \
             f"/{str(self.lon)},{str(self.lat)}" \
-            f"?contours_minutes={','.join(time_limits)}&polygons=true&" \
+            f"?contours_minutes={','.join(self.time_limits_str)}&polygons=true&" \
             f"&access_token={MAPBOX_TOKEN}"
         self.res = requests.get(self.mapbox_request_url)
 
@@ -51,7 +94,7 @@ class PoiIsochrones:
 
             self.isochrones = {}
             for i in range(len(self.json_result['features'])):
-                self.isochrones[int(time_limits[::-1][i])] = \
+                self.isochrones[int(self.time_limits_str[::-1][i])] = \
                     shape(self.json_result['features'][i]['geometry']).buffer(0)
 
             return self
@@ -83,6 +126,7 @@ class GroupIsochrones:
         self.array_points_lon_lat = array_points_lon_lat
         self.array_transport_mode = array_transport_mode
         self.nb_points = len(self.array_points_lon_lat)
+        print( len(self.array_points_lon_lat), len(self.array_transport_mode), self.nb_points)
         assert len(self.array_points_lon_lat) == len(self.array_transport_mode) == self.nb_points
         self.array_poi_isochrones = [
             PoiIsochrones(point=Point(self.array_points_lon_lat[i]), mode=array_transport_mode[i]).get_isochrones()
