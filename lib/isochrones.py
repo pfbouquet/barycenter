@@ -57,7 +57,7 @@ class PoiIsochrones:
         :return:
         """
         headers = {'Authorization': NAVITIA_TOKEN}
-        self.navitia_request_url = request_url = \
+        self.navitia_request_url = \
             f"https://api.navitia.io/v1/coverage/fr-idf/isochrones?" \
                 f"from={self.lon}%3B{self.lat}" \
                 "&boundary_duration%5B%5D=" + "&boundary_duration%5B%5D=".join(self.time_limits_str)
@@ -124,6 +124,7 @@ class GroupIsochrones:
         self.array_points_lon_lat = array_points_lon_lat
         self.array_transport_mode = array_transport_mode
         self.nb_points = len(self.array_points_lon_lat)
+        print( len(self.array_points_lon_lat), len(self.array_transport_mode), self.nb_points)
         assert len(self.array_points_lon_lat) == len(self.array_transport_mode) == self.nb_points
         self.array_poi_isochrones = [
             PoiIsochrones(point=Point(self.array_points_lon_lat[i]), mode=array_transport_mode[i]).get_isochrones()
