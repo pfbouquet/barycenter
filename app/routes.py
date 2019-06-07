@@ -132,8 +132,9 @@ def search(group_id):
 
         if 'bar_choice' in request.form:
             recipients = db.session.query(User.username, User.email).filter(User.id.in_(session['recipients'])).all()
+            group_name = db.session.query(Group.name).filter_by(id=group_id).first()[0]
             group_details = {
-                'group_name': db.session.query(Group.name).filter_by(id=group_id).first()[0],
+                'group_name': group_name,
                 'users': [{'user_name': username, 'email': email} for username, email in recipients],
             }
             place_details = session['results'][int(request.form['bar_choice'])]
@@ -141,7 +142,7 @@ def search(group_id):
             sender = MailSender(**credentials['mailsender'])
             with open('app/templates/text_mail.html', 'r') as f:
                 send_to_group(sender, f.read(), group_details, place_details)
-            return render_template('result.html', recipients=recipients)
+            return render_template('confirm.html', group_name=group_name)
 
     group = Group.query.filter_by(id=group_id).first()
     members = db.session.query(User).join(Member).join(Group).filter(Group.id == group_id).all()
