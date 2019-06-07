@@ -35,7 +35,7 @@ def get_price_score(price):
         return 0.25
 
 
-def score_places(place_df):
+def score_places(place_df, nb_trip):
     place_df.reset_index(inplace=True, drop=True)
     best_time = get_best_time(place_df.time)
     best_rate = get_best_rate(place_df.rating.tolist(), place_df.review_count.tolist())

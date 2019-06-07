@@ -50,6 +50,6 @@ def match_bars(coordinates, database_uri, limit=3):
 
     iso = get_isochrones(coordinates)
     place_df = get_geomatching_places(iso, database_uri, 50)
-    place_df_scored = scoring.score_places(place_df)
+    place_df_scored = scoring.score_places(place_df, nb_trip = len(coordinates)
 
     return place_df_scored.sort_values(by=['score'], ascending=False).head(limit).to_dict('records')
