@@ -1,9 +1,29 @@
-<p>Hello {{username}} !</p>
-<p>&nbsp;</p>
-<p>Our cutting edge algorithm smartly selected the best place for meeting members of the group : {{group_name}} </p>
-<p>&nbsp;</p>
-<p>Here is the list of the selected place :</p>
-<p>lien1<br />lien2<br />lien3<br />lien4<br />lien5<br />lien6</p>
-<p>&nbsp;</p>
-<p>All the Smart Meeting Place team hope that you're going to enjoy this great moment !<br />
-<br />The Smart Meeting Place team.</p>
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+	background-color: #F9BB00;
+    font: 15px Trebuchet MS, sans-serif;
+  	color: white;
+    text-decoration: none;
+    text-align: center;
+    margin: 0px;
+    padding: 20px;
+}
+img {
+  width: 50%;
+  max-width: 300px;
+}
+</style>
+</head>
+  <body>
+<p style="text-align: center;"><img src="http://barycenter.fuz.org/static/img/logo_wide.png" alt="" /></p>
+<h2 style="text-align: center;">Hello {{user_name}},</h2>
+<p style="text-align: center;">Our cutting-edge algorithm smartly selected the best place for meeting members of the group : {{group_name}}</p>
+<p style="text-align: center;">The selected place is {{place_name}} :<br />{{place_yelp_url}}</p>
+<p style="text-align: center;">You want to know where this place is ?<br />Just follow this link :&nbsp;<br />{{place_direction_url}}<br /><br /></p>
+<p style="text-align: center;">All the Barycenter team hope that you're going to enjoy this great moment !</p>
+<p style="text-align: center;">The Barycenter team</p>
+</body>
+</html>p>
