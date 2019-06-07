@@ -15,7 +15,8 @@ def call_yelp(yelp_api_key, yelp_host, yelp_search_endpoint, categories, locatio
         'categories': categories.replace(' ', '+'),
         'location': location.replace(' ', '+'),
         'offset': offset,
-        'limit': limit
+        'limit': limit,
+        'sort_by': 'rating'
     }
 
     response = requests.request('GET', url, headers=headers, params=url_params)
@@ -24,7 +25,7 @@ def call_yelp(yelp_api_key, yelp_host, yelp_search_endpoint, categories, locatio
 
 def format_places_yelp(places_json):
     cols = [
-        'id',
+        'business_id',
         'name',
         'categories',
         'price',
@@ -41,15 +42,16 @@ def format_places_yelp(places_json):
 
     places_df['latitude'] = [b['latitude'] for b in places_df['coordinates']]
     places_df['longitude'] = [b['longitude'] for b in places_df['coordinates']]
+    places_df.rename({'id':'business_id'}, axis=1, inplace=True)
 
     return places_df[cols]
 
 
-def get_places_yelp(yelp_api_key, yelp_host, yelp_search_endpoint, categories, location, nb, db_conn_str, table):
+def get_places_yelp(yelp_api_key, yelp_host, yelp_search_endpoint, categories, location, nb, database_uri, table):
     call_limit = 50
     all_df = []
     is_first_batch = True
-    engine = sqlalchemy.create_engine(db_conn_str)
+    engine = sqlalchemy.create_engine(database_uri)
 
     for offset in range(0, nb, call_limit):
         rep = call_yelp(yelp_api_key, yelp_host, yelp_search_endpoint, categories, location, offset=offset, limit=min(nb - offset, call_limit))

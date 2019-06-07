@@ -1,4 +1,4 @@
-CREATE TABLE coding_night.user (
+CREATE TABLE public.user (
 
   insert_datetime TIMESTAMP DEFAULT now(),
   id SERIAL NOT NULL CONSTRAINT users_pkey PRIMARY KEY,

@@ -1,3 +1,7 @@
 conf/credentials.yaml
-.idea/
+conf/app_conf.py
 conf/app.py
+.idea/
+.DS_Store
+.ipynb_checkpoints
+__pycache__
