@@ -13,6 +13,7 @@ def get_isochrones(coordinates):
 
 
 def get_geomatching_places(iso, database_uri, geomatching_target=50):
+
     engine = sqlalchemy.create_engine(database_uri)
 
     geo_places_query = """
@@ -51,6 +52,5 @@ def match_bars(coordinates, database_uri, limit=3):
 
     geomatching_places_df = get_geomatching_places(iso, database_uri, 50)
 
-
-
+    return geomatching_places_df
 
