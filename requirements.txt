@@ -21,3 +21,5 @@ numpy==1.16.3
 PyYAML==5.1
 https://storage.googleapis.com/bbc-datascience-libraries/python/dslib-0.0.4.tar.gz
 WTForms==2.2.1
+geopandas==0.5.0
+folium==0.9.1
