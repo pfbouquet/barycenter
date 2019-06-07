@@ -12,7 +12,7 @@ params = {
     'table': 'places_bar',
     'categories': 'bars',
     'location': 'Paris, FR',
-    'nb': 151
+    'nb': 10000
 }
 
 places.get_places_yelp(**params)
