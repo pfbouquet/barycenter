@@ -126,6 +126,7 @@ class GroupIsochrones:
         self.array_points_lon_lat = array_points_lon_lat
         self.array_transport_mode = array_transport_mode
         self.nb_points = len(self.array_points_lon_lat)
+        assert len(self.array_points_lon_lat) == len(self.array_transport_mode) == self.nb_points
         self.array_poi_isochrones = []
         for i in range(self.nb_points):
             to_add = PoiIsochrones(
