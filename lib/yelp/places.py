@@ -47,11 +47,11 @@ def format_places_yelp(places_json):
     return places_df[cols]
 
 
-def get_places_yelp(yelp_api_key, yelp_host, yelp_search_endpoint, categories, location, nb, db_conn_str, table):
+def get_places_yelp(yelp_api_key, yelp_host, yelp_search_endpoint, categories, location, nb, database_uri, table):
     call_limit = 50
     all_df = []
     is_first_batch = True
-    engine = sqlalchemy.create_engine(db_conn_str)
+    engine = sqlalchemy.create_engine(database_uri)
 
     for offset in range(0, nb, call_limit):
         rep = call_yelp(yelp_api_key, yelp_host, yelp_search_endpoint, categories, location, offset=offset, limit=min(nb - offset, call_limit))

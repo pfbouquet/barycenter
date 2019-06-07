@@ -12,9 +12,8 @@ def get_isochrones(coordinates):
     return several_isochrones
 
 
-def get_geomatching_places(iso, credentials_db, geomatching_target=50):
-    db_conn_str = 'postgresql://{user}:{password}@{host}:{port}/{db}'.format(**credentials_db)
-    engine = sqlalchemy.create_engine(db_conn_str)
+def get_geomatching_places(iso, database_uri, geomatching_target=50):
+    engine = sqlalchemy.create_engine(database_uri)
 
     geo_places_query = """
         SELECT
@@ -46,11 +45,11 @@ def get_geomatching_places(iso, credentials_db, geomatching_target=50):
     return geomatching_places_df_unique
 
 
-def match_bars(coordinates, credentials_db, limit=3):
+def match_bars(coordinates, database_uri, limit=3):
 
     iso = get_isochrones(coordinates)
 
-    geomatching_places_df = get_geomatching_places(iso, credentials_db, 50)
+    geomatching_places_df = get_geomatching_places(iso, database_uri, 50)
 
 
 
