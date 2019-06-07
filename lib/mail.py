@@ -60,7 +60,7 @@ def send_to_group(sender, template, group, place):
     user_list = group['users']
     place_name = place['name']
     place_yelp_url = place['url']
-    place_direction_url = 'https: // www.google.com / maps / dir /?api = 1 & destination = {latitude}, {longitude} & travelmode = bicycling'.format(**place)
+    place_direction_url = 'https://www.google.com/maps/dir/?api=1&destination={latitude},{longitude}&travelmode=bicycling'.format(**place)
 
     for user in user_list:
         text = sender.generate_text(template,
