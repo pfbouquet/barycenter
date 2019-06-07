@@ -23,7 +23,7 @@ class MailSender:
                 {
                     "From": {
                         "Email": "smartmeetingplace@gmail.com",
-                        "Name": "Smart Meeting Place"
+                        "Name": "Barycenter"
                     },
                     "To": [
                         {
@@ -31,8 +31,8 @@ class MailSender:
                             "Name": "You"
                         }
                     ],
-                    "Subject": "Find out your potential meeting points!",
-                    "TextPart": "Smart meeting place",
+                    "Subject": "Let's meet your friends!",
+                    "TextPart": "Barycenter",
                     "HTMLPart": text
                 }
             ]
