@@ -8,11 +8,12 @@
 <table align="center">
 
     {% for member in members %}
-    <tr>
-        <td><input id="user_{{ member.id }}" type="checkbox" name="recipient" value="{{ member.id }}"/></td>
-        <td>{{ member.username }}</td>
-    </tr>
-    <tr><td><button name="search" value="{{ group['id'] }}" type="submit">Search</button></td></tr>
+    <tr><td>
+        <label class="container">{{ member.username }}
+          <input type="checkbox" name="recipient" value="{{ member.id }}">
+          <span class="checkmark"></span>
+        </label>
+    </td></tr>
     {% endfor %}
 
 </table>
