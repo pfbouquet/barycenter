@@ -3,7 +3,7 @@ from geopy.geocoders import Nominatim
 
 def address_to_geopoint(address):
 
-    geolocator = Nominatim(user_agent="SmartMeet")
-    location = geolocator.geocode(address)
+    geo_locator = Nominatim(user_agent="SmartMeet")
+    location = geo_locator.geocode(address)
 
-    return location.latitude, location.longitude
+    return location.longitude, location.latitude
