@@ -2,12 +2,12 @@
 
 {% block content %}
 
+<a href="{{ url_for('groups') }}"><img class="logo_wide" src="{{ url_for('static', filename='img/logo_wide.png') }}"></a>
+
+
 <h1>{{ group['name'] }}</h1>
 
-<p><a href="{{ url_for('groups') }}">Back</a></p>
-
 <table align="center">
-<form action="" method="post">
 
 {% for member in members %}
     <tr>
@@ -17,13 +17,22 @@
     </tr>
 {% endfor %}
 
-    <tr><td>Share: http://0.0.0.0:5000/groups?subscribe={{ group['id'] }}</td></tr>
-    <tr><td><button name="leave_group" value="{{ group['id'] }}" type="submit">Leave this group</button></td></tr>
+</table>
+<table align="center">
 
-</form>
-
-    <tr><td><button onclick="window.location.href='{{ url_for('search',  group_id=group['id']) }}'">Search</button></td></tr>
+    <tr>
+        <td><button onclick="window.location.href='{{ url_for('search',  group_id=group['id']) }}'">Meet!</button></td>
+        <form action="" method="post">
+        <td><button name="leave_group" value="{{ group['id'] }}" type="submit">Leave</button></td>
+        </form>
+    </tr>
 
 </table>
+
+<h1>Share group</h1>
+
+<p><textarea>http://35.246.137.4/groups?subscribe={{ group['id'] }}</textarea></p>
+
+<p><a href="{{ url_for('groups') }}">Back to Groups</a></p>
 
 {% endblock %}
