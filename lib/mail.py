@@ -31,7 +31,7 @@ class MailSender:
                             "Name": "You"
                         }
                     ],
-                    "Subject": "Let's meet your friends!",
+                    "Subject": "The bar is waiting for you !",
                     "TextPart": "Barycenter",
                     "HTMLPart": text
                 }
