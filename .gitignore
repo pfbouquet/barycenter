@@ -5,3 +5,4 @@ conf/app.py
 .DS_Store
 .ipynb_checkpoints
 __pycache__
+current_folium_map.html
