@@ -11,9 +11,7 @@
 
 {% for member in members %}
     <tr>
-        <td>{{ member['username'] }} </td>
-        <td>[{{ member['address_1'] }}]</td>
-        <td>[{{ member['address_2'] }}]</td>
+        <td><b>{{ member['username'] }}</b><br/>({{ member['address_1'] }} & {{ member['address_2'] }})<br/>&nbsp;</td>
     </tr>
 {% endfor %}
 
