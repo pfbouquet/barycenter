@@ -13,6 +13,7 @@ bounding_box_fr = loads('POLYGON((-7 52,10 52,10 41,-7 41,-7 52))')
 
 
 def generate_html_map(
+        destination: str,
         dict_isochrones: {},
         array_lon_lat_users: [(float, float)],
         array_popup_users: [str],
@@ -63,7 +64,7 @@ def generate_html_map(
             icon=CustomIcon(emoji_beer_png, icon_size=(40, 40), icon_anchor=(20, 20))
         ).add_to(my_map)
     # alternative way: save to a .html file
-    my_map.save('current_folium_map.html')
+    my_map.save(destination)
 
     # Documentation on how to embed a map here: https://github.com/python-visualization/folium/issues/781
     html_string = my_map.get_root().render()

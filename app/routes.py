@@ -9,7 +9,9 @@ from app import app, db
 from app.forms import RegistrationForm, GroupCreationForm
 from app.models import User, Group, Member
 from lib import matching
+from lib.generate_dynamic_map import generate_html_map
 from lib.geo_encode import address_to_geopoint
+from lib.gif import get_random_gif_url
 from lib.mail import MailSender, send_to_group
 from lib.tools import get_database_uri
 
@@ -119,15 +121,29 @@ def search(group_id):
         if 'search' in request.form:
             # GET RECIPIENTS
             session['recipients'] = [int(id) for id in request.form.getlist('recipient')]
-            recipients = db.session.query(User.address_1, User.address_1) \
+            recipients = db.session.query(User.address_1, User.address_2) \
                 .filter(User.id.in_(session['recipients'])).all()
             recipients_enriched = []
             for recipient_tuple in recipients:
                 recipients_enriched.extend(map(address_to_geopoint, recipient_tuple))
             # GET BEST PLACES
             credentials = yaml.safe_load(open('conf/credentials.yaml', 'r'))
-            best_places = matching.match_bars(recipients_enriched, get_database_uri(**credentials['db']), limit=3)
+            isochrones, best_places = matching.match_bars(recipients_enriched, get_database_uri(**credentials['db']), limit=3)
             session['results'] = best_places
+            # GENERATE MAP
+            map_html_path = 'app/templates/map.html'
+            names = db.session.query(User.username).filter(User.id.in_(session['recipients']))
+            addresses = []
+            for name in names:
+                addresses.extend([f'{name[0]} home', f'{name[0]} work'])
+            generate_html_map(
+                destination=map_html_path,
+                dict_isochrones=isochrones.poi_isochrone_builder,
+                array_lon_lat_users=recipients_enriched,
+                array_popup_users=addresses,
+                array_lon_lat_bars=[(bar['longitude'], bar['latitude']) for bar in best_places],
+                array_popup_bars=[bar['name'] for bar in best_places]
+            )
             return render_template('result.html', results=best_places)
 
         if 'bar_choice' in request.form:
@@ -140,10 +156,16 @@ def search(group_id):
             place_details = session['results'][int(request.form['bar_choice'])]
             credentials = yaml.safe_load(open('conf/credentials.yaml', 'r'))
             sender = MailSender(**credentials['mailsender'])
+            gif_url = get_random_gif_url(term='cheers', giphy_credentials=credentials['giphy'])
             with open('app/templates/text_mail.html', 'r') as f:
                 send_to_group(sender, f.read(), group_details, place_details)
-            return render_template('confirm.html', group_name=group_name)
+            return render_template('confirm.html', group_name=group_name, gif_url=gif_url)
 
     group = Group.query.filter_by(id=group_id).first()
     members = db.session.query(User).join(Member).join(Group).filter(Group.id == group_id).all()
     return render_template('search.html', group=group, members=members)
+
+
+@app.route('/folium_map')
+def folium_map():
+    return render_template('map.html')
