@@ -1,2 +1,7 @@
 conf/credentials.yaml
-launcher_mail.py
+conf/app_conf.py
+conf/app.py
+.idea/
+.DS_Store
+.ipynb_checkpoints
+__pycache__
