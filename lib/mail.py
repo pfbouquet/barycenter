@@ -45,18 +45,21 @@ class MailSender:
         generate text of the email
         :param groupname: name of the group
         :param username: name of the user
+        :param place_name: name of the place to meet
+        :param place_url: link tio itenary
         :return: html text to send
         """
         text = render_string(template, params)
         return text
 
 
-def send_to_group(sender, template, group):
+def send_to_group(sender, template, group, place):
 
     group_name = group['group_name']
     user_list = group['users']
+    place_name = place['name']
+    place_url = 'https: // www.google.com / maps / dir /?api = 1 & destination = {latitude}, {longitude} & travelmode = bicycling'.format(**place)
 
     for user in user_list:
-        text = sender.generate_text(template, username=user['username'], group_name=group_name)
+        text = sender.generate_text(template, username=user['username'], group_name=group_name, place_name=place_name, place_url=place_url)
         sender.send(text, user['email'])
-
