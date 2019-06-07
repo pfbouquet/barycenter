@@ -67,6 +67,8 @@ class PoiIsochrones:
 
             self.isochrones = {}
             for i in range(len(self.json_result['isochrones'])):
+                # self.isochrones is a dict. Keys are the times rounded to 10 min
+                # Values are the shapely shapes of the corresponding boxes.
                 self.isochrones[self.json_result['isochrones'][i]['max_duration']] = \
                     shape(self.json_result['isochrones'][i]['geojson']).buffer(0)
             return self
