@@ -30,3 +30,6 @@ def get_price_score(price):
         return 0.5
     else:
         return 0.25
+
+
+
