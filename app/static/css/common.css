@@ -1,0 +1,74 @@
+
+body {
+    background-color: #F9BB00;
+    font: 15px Trebuchet MS, sans-serif;
+    text-decoration: none;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+}
+
+input{
+    border-radius: 2px;
+    background-color:  #E8B12A;
+    padding: 14px 15px 14px 20px;
+    border: 1px solid #E8B12A;
+
+    color:#fff;
+    outline: none;
+    -webkit-appearance: none;
+
+    font: 15px Trebuchet MS;
+    color: #fff;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #FFCC58;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #FFCC58;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #FFCC58;
+}
+
+button {
+
+    -webkit-appearance: none;
+    background-color:  #fff;
+    color: #E8B12A;
+    font: bold 15px Trebuchet MS;
+    border-radius: 2px;
+    padding: 13px 20px;
+    cursor: pointer;
+    outline: none;
+    border: 1px solid #fff;
+    min-width: 100px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+.to_center {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+td {
+    text-align: center;
+}
+
+.logo_wide {
+    width: 70%;
+    max-width: 300px;
+    margin-top: 50px;
+}
