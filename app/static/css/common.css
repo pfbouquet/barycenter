@@ -79,3 +79,23 @@ h1 {
     color: #fff;
     font: bold 25px Trebuchet MS;
 }
+
+td figure{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+figure{
+   width:300px; /*container-width*/
+   height: 200px;
+   overflow:hidden; /*hide bounds of image */
+   margin:0;   /*reset margin of figure tag*/
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+figure img{
+   display:block; /*remove inline-block spaces*/
+   width: 100%;
+   min-height: 100%;
+}

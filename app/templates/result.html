@@ -2,10 +2,25 @@
 
 {% block content %}
 
+<a href="{{ url_for('groups') }}"><img class="logo_wide" src="{{ url_for('static', filename='img/logo_wide.png') }}"></a>
+
+<h1>Best bars for your group</h1>
+
+<form action="" method="post">
 <table align="center">
 
-<tr><td>Do stuff here</td></tr>
+{% for i in range(results|length) %}
+{% set result = results[i]  %}
+
+<tr><td align="center"><figure><img src="{{ result['image_url'] }}"></figure></td></tr>
+<tr><td><b>{{ result['name'] }}</b></td></tr>
+<tr><td>{{ ', '.join(result['location']['display_address']) }}</td></tr>
+<tr><td>{{ result['price'] }}  – {{ result['rating'] }}/5 ({{ result['review_count'] }} votes)</td></tr>
+<tr><td><button type="submit" name="bar_choice" value="{{ i }}">Choose</button></td></tr>
+
+{% endfor %}
 
 </table>
+</form>
 
 {% endblock %}
