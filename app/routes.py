@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+import yaml
 from flask import render_template, url_for, request, session
 from flask_login import current_user, login_required, login_user
 from werkzeug.utils import redirect
@@ -7,6 +8,9 @@ from werkzeug.utils import redirect
 from app import app, db
 from app.forms import RegistrationForm, GroupCreationForm
 from app.models import User, Group, Member
+from lib import matching
+from lib.geo_encode import address_to_geopoint
+from lib.tools import get_database_uri
 
 
 def get_post_result(key):
@@ -60,6 +64,7 @@ def signin():
 
 
 @app.route('/groups', methods=['GET', 'POST'])
+@login_required
 def groups():
 
     if request.method == 'POST':
@@ -111,10 +116,17 @@ def search(group_id):
 
     if request.method == 'POST':
         if 'search' in request.form:
+            # GET RECIPIENTS
             session['recipients'] = [int(id) for id in request.form.getlist('recipient')]
-            recipients = User.query.filter(User.id.in_(session['recipients']))
-            # GET BEST BAR
-            return render_template('result.html', recipients=recipients)
+            recipients = db.session.query(User.address_1, User.address_1) \
+                .filter(User.id.in_(session['recipients'])).all()
+            recipients_enriched = []
+            for recipient_tuple in recipients:
+                recipients_enriched.extend(map(address_to_geopoint, recipient_tuple))
+            # GET BEST PLACES
+            credentials = yaml.safe_load(open('conf/credentials.yaml', 'r'))
+            best_places = matching.match_bars(recipients_enriched, get_database_uri(**credentials['db']), limit=3)
+            return render_template('result.html', results=best_places)
 
         if 'send' in request.form:
             recipients = User.query.filter(User.id.in_(session['recipients']))
