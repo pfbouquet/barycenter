@@ -2,7 +2,7 @@ from datetime import timedelta
 
 import yaml
 from flask import render_template, url_for, request, session
-from flask_login import current_user, login_required, login_user
+from flask_login import current_user, login_required, login_user, logout_user
 from werkzeug.utils import redirect
 
 from app import app, db
@@ -66,6 +66,12 @@ def signin():
         return redirect(url_for('groups'))
 
     return render_template('signin.html', form=form)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 
 @app.route('/groups', methods=['GET', 'POST'])
