@@ -22,6 +22,8 @@ def get_post_result(key):
 
 @app.login_manager.unauthorized_handler
 def unauthorized_handler():
+    if request.args.get('subscribe'):
+        session['subscribe'] = request.args['subscribe']
     return redirect(url_for('login'))
 
 
@@ -82,11 +84,17 @@ def groups():
             member = Member(user_id=current_user.id, group_id=request.form['accept_group'])
             db.session.add(member)
             db.session.commit()
+            if session.get('subscribe'):
+                session.pop('subscribe')
             return redirect(url_for('group', group_id=request.form['accept_group']))
+        if 'refuse_group' in request.form:
+            if session.get('subscribe'):
+                session.pop('subscribe')
+            return redirect(url_for('groups'))
 
     form = GroupCreationForm()
     groups = Group.query.join(Member).filter(Member.user_id == current_user.id).all()
-    subscribe_id = request.args.get('subscribe')
+    subscribe_id = request.args.get('subscribe') or session.get('subscribe')
     if subscribe_id:
         if subscribe_id not in [member.group_id for member in Member.query.filter_by(user_id=current_user.id).all()]:
             subscribe = Group.query.filter_by(id=subscribe_id).first()
