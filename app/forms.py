@@ -13,7 +13,7 @@ class RegistrationForm(FlaskForm):
         'Email', validators=[DataRequired(), Email()], render_kw={'placeholder': 'Email'}
     )
     password = PasswordField(
-        'Password', validators=[DataRequired(), Length(8, 20)], render_kw={'placeholder': 'Password'}
+        'Password', validators=[DataRequired(), Length(8, 40)], render_kw={'placeholder': 'Password'}
     )
     password2 = PasswordField(
         'Repeat password', validators=[DataRequired(), EqualTo('password')], render_kw={'placeholder': 'Repeat password'}
