@@ -7,13 +7,13 @@ from app.models import User
 class RegistrationForm(FlaskForm):
 
     username = StringField(
-        'Username', validators=[DataRequired(), Length(8, 20)], render_kw={'placeholder': 'Username'}
+        'Username', validators=[DataRequired(), Length(6, 30)], render_kw={'placeholder': 'Username'}
     )
     email = StringField(
         'Email', validators=[DataRequired(), Email()], render_kw={'placeholder': 'Email'}
     )
     password = PasswordField(
-        'Password', validators=[DataRequired(), Length(8, 20)], render_kw={'placeholder': 'Password'}
+        'Password', validators=[DataRequired(), Length(8, 40)], render_kw={'placeholder': 'Password'}
     )
     password2 = PasswordField(
         'Repeat password', validators=[DataRequired(), EqualTo('password')], render_kw={'placeholder': 'Repeat password'}
@@ -40,6 +40,6 @@ class RegistrationForm(FlaskForm):
 class GroupCreationForm(FlaskForm):
 
     new_group_name = StringField(
-        'Group  name', validators=[DataRequired(), Length(5, 20)], render_kw={'placeholder': 'Group name'}
+        'Group  name', validators=[DataRequired(), Length(5, 30)], render_kw={'placeholder': 'Group name'}
     )
     submit = SubmitField('Create group')

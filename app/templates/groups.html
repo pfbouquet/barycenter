@@ -56,13 +56,17 @@
     <form action="" method="post">
         <tr>
             <td><button name="accept_group" value="{{ subscribe['id'] }}" type="submit">OK</button></td>
-            </form>
-            <td><button onclick="window.location.href='{{ url_for('groups') }}'">No</button></td>
+            <td><button name="refuse_group" value="{{ subscribe['id'] }}" type="submit">Discard</button></td>
         </tr>
+    </form>
 </table>
 
-
 {% endif %}
+
+
+<table align="center">
+        <tr><td><a href="{{url_for('logout')}}">Logout</a></tr>
+</table>
 
 
 {% endblock %}
