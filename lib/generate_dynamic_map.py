@@ -13,6 +13,7 @@ bounding_box_fr = loads('POLYGON((-7 52,10 52,10 41,-7 41,-7 52))')
 
 
 def erase_old_maps():
+    """Mock, to write later"""
     folder = 'app/templates/maps/'
 
 
