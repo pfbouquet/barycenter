@@ -145,7 +145,8 @@ def search(group_id):
             isochrones, best_places = matching.match_bars(recipients_enriched, get_database_uri(**credentials['db']), limit=3)
             session['results'] = best_places
             # GENERATE MAP
-            map_html_path = 'app/templates/map.html'
+            map_html_path = f'app/templates/maps/map_{group_id}.html'
+            print(1, map_html_path )
             names = db.session.query(User.username).filter(User.id.in_(session['recipients']))
             addresses = []
             for name in names:
@@ -158,7 +159,7 @@ def search(group_id):
                 array_lon_lat_bars=[(bar['longitude'], bar['latitude']) for bar in best_places],
                 array_popup_bars=[bar['name'] for bar in best_places]
             )
-            return render_template('result.html', results=best_places)
+            return render_template('result.html', results=best_places, group_id=group_id)
 
         if 'bar_choice' in request.form:
             recipients = db.session.query(User.username, User.email).filter(User.id.in_(session['recipients'])).all()
@@ -182,4 +183,5 @@ def search(group_id):
 
 @app.route('/folium_map')
 def folium_map():
-    return render_template('map.html')
+    group_id = request.args.get('group_id')
+    return render_template(f'maps/map_{group_id}.html')
