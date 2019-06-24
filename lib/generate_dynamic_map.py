@@ -12,6 +12,11 @@ GOOGLEMAPS_TOKEN = data_loaded_credentials['googlemaps']['GOOGLEMAPS_TOKEN']
 bounding_box_fr = loads('POLYGON((-7 52,10 52,10 41,-7 41,-7 52))')
 
 
+def erase_old_maps():
+    """Mock, to write later"""
+    folder = 'app/templates/maps/'
+
+
 def generate_html_map(
         destination: str,
         dict_isochrones: {},
@@ -65,8 +70,6 @@ def generate_html_map(
         ).add_to(my_map)
     # alternative way: save to a .html file
     my_map.save(destination)
-
     # Documentation on how to embed a map here: https://github.com/python-visualization/folium/issues/781
-    html_string = my_map.get_root().render()
-
-    return html_string
+    #html_string = my_map.get_root().render()
+    return 0

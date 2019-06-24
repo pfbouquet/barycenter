@@ -6,3 +6,4 @@ conf/app.py
 .ipynb_checkpoints
 __pycache__
 current_folium_map.html
+app/templates/maps/map_*.html
