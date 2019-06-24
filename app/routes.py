@@ -146,7 +146,6 @@ def search(group_id):
             session['results'] = best_places
             # GENERATE MAP
             map_html_path = f'app/templates/maps/map_{group_id}.html'
-            print(1, map_html_path )
             names = db.session.query(User.username).filter(User.id.in_(session['recipients']))
             addresses = []
             for name in names:
