@@ -12,6 +12,13 @@ def get_isochrones(coordinates):
     return several_isochrones
 
 
+def filter_categories(row):
+    ok_cat = ['cocktailbars', 'beerbar', 'wine_bars']
+    no_cat = ['bistros']
+
+    return sum([c['alias'] in ok_cat for c in row['categories']]) >= 1 and sum([c['alias'] in no_cat for c in row['categories']]) == 0
+
+
 def get_geomatching_places(iso, database_uri, geomatching_target=50):
 
     engine = sqlalchemy.create_engine(database_uri)
@@ -31,12 +38,13 @@ def get_geomatching_places(iso, database_uri, geomatching_target=50):
         poly = iso.poi_isochrone_builder[i]
         if not poly.is_empty:
             df = pd.read_sql_query(geo_places_query.format(shape=poly), con=engine)
+            df_qualified = df[df.apply(filter_categories, axis=1)]
 
-            if len(df) == 0:
+            if len(df_qualified) == 0:
                 continue
 
-            df['time'] = i
-            geomatching_places.append(df)
+            df_qualified['time'] = i
+            geomatching_places.append(df_qualified)
             geomatching_places_df = pd.concat(geomatching_places).reset_index(drop=True)
             geomatching_places_df_unique = geomatching_places_df.loc[geomatching_places_df.groupby('business_id')['time'].idxmin()]
             print('time: {time} > {nb_place} places'.format(time=i, nb_place=len(geomatching_places_df_unique)))
