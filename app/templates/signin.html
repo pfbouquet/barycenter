@@ -44,6 +44,13 @@
             {% endfor %}
         </td></tr>
         <tr><td>
+            <div id="locationField">
+              <input id="autocomplete"
+                     placeholder="Enter your address"
+                     onFocus="geolocate()"
+                     type="text"/>
+            </div></td></tr>
+        <tr><td>
             <button type="submit">Sign in</button>
         </td></tr>
         <tr><td>
@@ -53,5 +60,8 @@
 </table>
 
 </div>
+
+<script src="{{ url_for('static', filename='js/autocomplete.js') }}" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAxbIGyktrkTiKx9vVXkgoVihDqPZ6vJCM&libraries=places&callback=initAutocomplete" async defer></script>
 
 {% endblock %}
