@@ -17,7 +17,7 @@ mailjet-rest==1.3.3
 geopy==1.20.0
 requests==2.21.0
 Shapely==1.6.4.post2
-numpy==1.16.3
+numpy==1.22.0
 PyYAML==5.1
 https://storage.googleapis.com/bbc-datascience-libraries/python/dslib-0.0.4.tar.gz
 WTForms==2.2.1
